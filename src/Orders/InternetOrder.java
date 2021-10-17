@@ -1,11 +1,13 @@
 package Orders;
 
 import items.Item;
+import lists.DoublyLinkedList;
+import lists.ListNode;
 
 import java.util.LinkedList;
 
 public class InternetOrder implements Order{
-    LinkedList<Item> list = new LinkedList<Item>();
+    DoublyLinkedList<Item> list = new DoublyLinkedList<>();
 
     public InternetOrder() {
     }
@@ -19,22 +21,28 @@ public class InternetOrder implements Order{
     }
 
     public boolean remove(String itemName){
-        for (Item it: list) {
+        ListNode<Item> current = list.getFront();
+        while (current != null) {
+            Item it = current.getData();
             if (it.getName().equals(itemName)) {
                 list.remove(it);
                 return true;
             }
+            current = list.getNext(current);
         }
         return false;
     }
 
-    public int removeAll(String dishName){
+    public int removeAll(String itemName){
         int count = 0 ;
-        for (Item it: list) {
-            if (it.getName().equals(dishName)) {
+        ListNode<Item> current = list.getFront();
+        while (current != null) {
+            Item it = current.getData();
+            if (it.getName().equals(itemName)) {
                 list.remove(it);
                 count++;
             }
+            current = list.getNext(current);
         }
         return count;
     }
@@ -45,37 +53,49 @@ public class InternetOrder implements Order{
     public Item[] getItems(){
         Item[] items = new Item[list.size()];
         int i = 0;
-        for (Item it: list) {
+        ListNode<Item> current = list.getFront();
+        while (current != null) {
+            Item it = current.getData();
             items[i] = it;
             i++;
+            current = list.getNext(current);
         }
         return items;
     }
     public double costTotal() {
         double count = 0;
-        for (Item it: list) {
+        ListNode<Item> current = list.getFront();
+        while (current != null) {
+            Item it = current.getData();
             count += it.getPrice();
+            current = list.getNext(current);
         }
         return count;
     }
     public int itemQuantity(String itemName){
         int count = 0;
-        for (Item it: list) {
+        ListNode<Item> current = list.getFront();
+        while (current != null) {
+            Item it = current.getData();
             if (it.getName().equals(itemName))
                 count++;
+            current = list.getNext(current);
         }
         return count;
     }
-    public String[] dishesNames(){
+    public String[] itemsNames(){
         String[] ret = new String[list.size()];
         int i = 0;
-        for (Item it: list) {
+        ListNode<Item> current = list.getFront();
+        while (current != null) {
+            Item it = current.getData();
             ret[i] = it.getName();
             i++;
+            current = list.getNext(current);
         }
         return ret;
     }
-    public Item[] sortedDishesByCostDesc(){
+    public Item[] sortedItemsByCostDesc(){
         Item[] k = getItems();
         for (int out = list.size() - 1; out >= 1; out--)  //Внешний цикл
             for (int in = 0; in < out; in++)    //Внутренний цикл

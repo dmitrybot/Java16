@@ -6,36 +6,36 @@ import items.Item;
 public class RestaurantOrder implements Order {
     private final int sizeD = 10;
     private int size = 0;
-    private Dish[] dishes = new Dish[sizeD];
-    public boolean add(Item dish) {
+    private Item[] items = new Item[sizeD];
+    public boolean add(Item item) {
         if (size < sizeD) {
-            dishes[size-1] = (Dish)dish;
+            items[size] = item;
             size++;
             return true;
         } else return false;
 
     }
-    public boolean remove(String dishName){
+    public boolean remove(String itemName){
         int i = 0;
         while (i < size) {
-            if (dishes[i].getName().equals(dishName)) {
-                for (int j = i; j < size-1;j++)
-                    dishes[j] = dishes[j+1];
-                dishes[size-1] = null;
+            if (items[i].getName().equals(itemName)) {
+                for (int j = i; j < size - 1;j++)
+                    items[j] = items[j + 1];
+                items[size-1] = null;
                 return true;
             }
             i++;
         }
         return false;
     }
-    public int removeAll(String dishName){
+    public int removeAll(String itemName){
         int i = 0;
         int count = 0;
         while (i < size) {
-            if (dishes[i].getName().equals(dishName)) {
-                for (int j = i; j < size-1;j++)
-                    dishes[j] = dishes[j+1];
-                dishes[size-1] = null;
+            if (items[i].getName().equals(itemName)) {
+                for (int j = i; j < size - 1;j++)
+                    items[j] = items[j + 1];
+                items[size-1] = null;
                 count++;
             }
             i++;
@@ -45,36 +45,36 @@ public class RestaurantOrder implements Order {
     public int itemQuantity(){
         return size;
     }
-    public int itemQuantity(String dishName) {
+    public int itemQuantity(String itemName) {
         int count = 0;
-        for (int i = 0;i < size; i++)
-            if (dishes[i].getName().equals(dishName))
+        for (int i = 0; i < size; i++)
+            if (items[i].getName().equals(itemName))
                 count++;
         return count;
     }
     public Item[] getItems(){
-        return dishes;
+        return items;
     }
     public double costTotal() {
         double count = 0;
         for (int i = 0; i < size; i++)
-            count += dishes[i].getPrice();
+            count += items[i].getPrice();
         return count;
     }
-    public String[] dishesNames(){
+    public String[] itemsNames(){
         String[] ret = new String[size];
-        for (int i = 0; i < size;i++)
-            ret[i] = dishes[i].getName();
+        for (int i = 0; i < size; i++)
+            ret[i] = items[i].getName();
         return ret;
     }
-    public Item[] sortedDishesByCostDesc(){
+    public Item[] sortedItemsByCostDesc(){
         for (int out = size - 1; out >= 1; out--)  //Внешний цикл
             for (int in = 0; in < out; in++)    //Внутренний цикл
-                if(dishes[in].getPrice() > dishes[in + 1].getPrice()) {
-                    Dish k = dishes[in];
-                    dishes[in] = dishes[in+1];
-                    dishes[in+1] = k;
+                if(items[in].getPrice() > items[in + 1].getPrice()) {
+                    Item k = items[in];
+                    items[in] = items[in + 1];
+                    items[in + 1] = k;
                 }
-        return dishes;
+        return items;
     }
 }

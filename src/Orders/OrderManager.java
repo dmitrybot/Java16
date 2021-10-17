@@ -1,3 +1,5 @@
+package Orders;
+
 import Orders.Order;
 import Orders.RestaurantOrder;
 import exeptions.IllegalTableNumber;
@@ -6,7 +8,7 @@ import items.Item;
 import java.util.HashMap;
 
 public class OrderManager {
-    private Order[] orders = new RestaurantOrder[20];
+    private Order[] orders = new Order[20];
     private HashMap<String, Order> hashmap = new HashMap<>();
     public void add(Order order, int tableNumber) {
         orders[tableNumber] = order;
@@ -24,12 +26,12 @@ public class OrderManager {
         return hashmap.get(adress);
     }
 
-    public void addDish(Item item, int tableNumber) throws IllegalTableNumber {
+    public void addItem(Item item, int tableNumber) throws IllegalTableNumber {
         if (tableNumber < 0 || tableNumber  >= orders.length) throw new IllegalTableNumber();
         orders[tableNumber].add(item);
     }
 
-    public void addDish(Item item, String adress){
+    public void addItem(Item item, String adress){
         hashmap.get(adress).add(item);
     }
 
@@ -40,6 +42,7 @@ public class OrderManager {
     public void removeOrder(String adress) {
         hashmap.remove(adress);
     }
+
     public int freeTableNumber(){
         for (int i = 0; i < 20;i++){
             if (orders[i] == null)
@@ -65,10 +68,11 @@ public class OrderManager {
     public Order[] getHashOrders() {
         return hashmap.values().toArray(new Order[0]);
     }
+
     public double ordersCostSummary() {
         int count = 0;
         for (int i = 0; i < 20; i++)
-            count += orders[i].costTotal();
+            if (orders[i] != null) count += orders[i].costTotal();
         return count;
     }
 
@@ -78,17 +82,17 @@ public class OrderManager {
             count += i.costTotal();
         return count;
     }
-    public int dishQuantity(String dishName){
+    public int itemQuantity(String itemName){
         int count = 0 ;
         for (int i = 0; i < 20; i++)
-            count += orders[i].itemQuantity(dishName);
+            if (orders[i] != null) count += orders[i].itemQuantity(itemName);
         return count;
     }
 
-    public int dishHashQuantity(String dishName){
+    public int itemHashQuantity(String itemName){
         int count = 0 ;
-        for (String i: hashmap.keySet())
-            if (i.equals(dishName)) count += hashmap.get(dishName).itemQuantity(dishName);
+        for (Order i: hashmap.values())
+            count += i.itemQuantity(itemName);
         return count;
     }
 }

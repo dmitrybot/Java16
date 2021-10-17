@@ -9,6 +9,6 @@ public interface Order {
     public double costTotal();
     public Item[] getItems();
     public int itemQuantity(String itemName);
-    public String[] dishesNames();
-    public Item[] sortedDishesByCostDesc();
+    public String[] itemsNames();
+    public Item[] sortedItemsByCostDesc();
 }
